@@ -1,5 +1,5 @@
 /*!
- * dashboard
+ * Dashboard
  * xiewulong <xiewulong@vip.qq.com>
  * create: 2017/12/13
  * since: 0.0.1

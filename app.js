@@ -1,10 +1,10 @@
 /*!
- * app
+ * App
  * xiewulong <xiewulong@vip.qq.com>
  * create: 2017/12/13
  * since: 0.0.1
  *
- * required process.env
+ * Required process.env
  * APP_MAILER_FROM
  * APP_MAILER_SMTP_ADDRESS
  * APP_MAILER_SMTP_PORT
