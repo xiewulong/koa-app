@@ -27,6 +27,7 @@
   "dependencies": {
     "koa": "^2.4.1",
     "koa-body": "^2.5.0",
+    "koa-mailer-v2": "^0.0.2",
     "koa-pug": "^3.0.0-2",
     "koa-router": "^7.3.0",
     "koa-session": "^5.5.1"

@@ -15,13 +15,13 @@
 
 const Koa = require('koa');
 const body = require('koa-body');
+const mailer = require('koa-mailer-v2');
 const Pug = require('koa-pug');
 const session = require('koa-session');
 const controllers = require('./controllers');
 
 const app = module.exports = new Koa();
 const development = app.env === 'development';
-const production = app.env === 'production';
 
 const pug = new Pug({
   app,
@@ -34,20 +34,22 @@ const pug = new Pug({
   pretty: development,
   viewPath: 'views',
 });
-// const transporter = nodemailer.createTransport({
-//   host: process.env.APP_MAILER_SMTP_ADDRESS,
-//   port: process.env.APP_MAILER_SMTP_PORT,
-//   // secure: false,
-//   auth: {
-//     user: process.env.APP_MAILER_SMTP_USERNAME,
-//     pass: process.env.APP_MAILER_SMTP_PASSWORD,
-//   },
-//   logger: development,
-//   debug: development,
-// });
 
 app.keys = ['APP COOKIE SECRET KEY'];
 app
+  .use(mailer({
+    from: process.env.APP_MAILER_FROM,
+    host: process.env.APP_MAILER_SMTP_ADDRESS,
+    port: process.env.APP_MAILER_SMTP_PORT,
+    secure: false,
+    auth: {
+      user: process.env.APP_MAILER_SMTP_USERNAME,
+      pass: process.env.APP_MAILER_SMTP_PASSWORD,
+    },
+    logger: development,
+    debug: development,
+    test: development,
+  }))
   .use(session({
     // domain: ${ctx.host},
     // httpOnly: true,
@@ -60,22 +62,9 @@ app
   .use(body())
   .use(async (ctx, next) => {
     ctx.pug = pug;
-    // ctx.mail = (data, callback) => transporter.sendMail(Object.assign({from: process.env.APP_MAILER_FROM}, data), callback);
 
     await next();
   })
-  // .use(async (ctx, next) => {
-  //   const start = Date.now();
-  //   await next();
-  //   const ms = Date.now() - start;
-  //   ctx.set('X-Response-Time', `${ms}ms`);
-  // })
-  // .use(async (ctx, next) => {
-  //   const start = Date.now();
-  //   await next();
-  //   const ms = Date.now() - start;
-  //   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
-  // })
   .use(controllers.routes(), controllers.allowedMethods())
   .use(async (ctx) => {
     ctx.status = 404;
