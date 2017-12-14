@@ -25,9 +25,12 @@
   },
   "homepage": "https://github.com/xiewulong/koa-app#readme",
   "dependencies": {
+    "js-yaml": "^3.10.0",
     "koa": "^2.4.1",
     "koa-body": "^2.5.0",
-    "koa-mailer-v2": "^0.0.2",
+    "koa-i18n": "^2.1.0",
+    "koa-locale": "^1.3.0",
+    "koa-mailer-v2": "^0.0.3",
     "koa-pug": "^3.0.0-2",
     "koa-router": "^7.3.0",
     "koa-session": "^5.5.1"

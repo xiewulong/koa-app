@@ -16,13 +16,15 @@ router
   .get('home', '/index', async (ctx, next) => {
     ctx.render('home/index.html');
   })
-  .get('/mailer', async(ctx, next) => {
-    let mail_text = 'It\'s just a test mail!';
+  .get('/hello', async (ctx, next) => {
+    ctx.body = ctx.i18n.__('hello');
+  })
+  .get('/mailer', async (ctx, next) => {
     ctx.mailer({
       to: 'mail_to@domain.com',
       subject: 'Test mail',
-      text: ctx.pug.render('mails/home_mailer.text', {text: mail_text}),
-      html: ctx.pug.render('mails/home_mailer.html', {text: mail_text}),
+      text: ctx.pug.render('mails/home_mailer.text', ctx.state),
+      html: ctx.pug.render('mails/home_mailer.html', ctx.state),
     }, (error, info, nodemailer) => {
       if (error) {
         return console.log(error);
