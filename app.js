@@ -15,7 +15,8 @@
 
 const yaml = require('js-yaml');
 const Koa = require('koa');
-const body = require('koa-body');
+const bodyparser = require('koa-bodyparser');
+const CSRF = require('koa-csrf');
 const i18n = require('koa-i18n');
 const locale = require('koa-locale');
 const mailer = require('koa-mailer-v2');
@@ -80,7 +81,20 @@ app
     // rolling: false,
     // signed: true,
   }, app))
-  .use(body())
+  .use(bodyparser())
+  .use(new CSRF({
+    // invalidSessionSecretMessage: 'Invalid session secret',
+    // invalidSessionSecretStatusCode: 403,
+    // invalidTokenMessage: 'Invalid CSRF token',
+    // invalidTokenStatusCode: 403,
+    // excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
+    // disableQuery: false,
+  }))
+  .use(async (ctx, next) => {
+    ctx.pug.locals.csrf = ctx.csrf;
+
+    await next();
+  })
   .use(controllers.routes(), controllers.allowedMethods())
   .use(async (ctx) => {
     ctx.status = 404;

@@ -27,7 +27,8 @@
   "dependencies": {
     "js-yaml": "^3.10.0",
     "koa": "^2.4.1",
-    "koa-body": "^2.5.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-csrf": "^3.0.6",
     "koa-i18n": "^2.1.0",
     "koa-locale": "^1.3.0",
     "koa-mailer-v2": "^0.0.3",
