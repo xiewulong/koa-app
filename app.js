@@ -17,6 +17,7 @@ const yaml = require('js-yaml');
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
 const CSRF = require('koa-csrf');
+const flash = require('koa-flash');
 const i18n = require('koa-i18n');
 const locale = require('koa-locale');
 const mailer = require('koa-mailer-v2');
@@ -27,7 +28,7 @@ const controllers = require('./controllers');
 const app = module.exports = new Koa();
 const development = app.env === 'development';
 
-app.keys = ['APP COOKIE SECRET KEY'];
+app.keys = ['COOKIE SECRET KEY BASE'];
 app.context.pug = new Pug({
   app,
   // basedir: '',
@@ -43,6 +44,25 @@ app.context.pug = new Pug({
 locale(app);
 
 app
+  .use(session({
+    // domain: ${ctx.host},
+    // httpOnly: true,
+    // key: 'koa:sess',
+    // maxAge: 86400000,
+    // overwrite: true,
+    // rolling: false,
+    // signed: true,
+  }, app))
+  // .use(new CSRF({
+  //   // invalidSessionSecretMessage: 'Invalid session secret',
+  //   // invalidSessionSecretStatusCode: 403,
+  //   // invalidTokenMessage: 'Invalid CSRF token',
+  //   // invalidTokenStatusCode: 403,
+  //   // excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
+  //   // disableQuery: false,
+  // }))
+  .use(flash())
+  .use(bodyparser())
   .use(i18n(app, {
     directory: 'locales',
     locales: ['zh-CN', 'en'],   // `zh-CN` defualtLocale, must match the locales to the filenames
@@ -72,26 +92,9 @@ app
     debug: development,
     test: development,
   }))
-  .use(session({
-    // domain: ${ctx.host},
-    // httpOnly: true,
-    // key: 'koa:sess',
-    // maxAge: 86400000,
-    // overwrite: true,
-    // rolling: false,
-    // signed: true,
-  }, app))
-  .use(bodyparser())
-  .use(new CSRF({
-    // invalidSessionSecretMessage: 'Invalid session secret',
-    // invalidSessionSecretStatusCode: 403,
-    // invalidTokenMessage: 'Invalid CSRF token',
-    // invalidTokenStatusCode: 403,
-    // excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
-    // disableQuery: false,
-  }))
   .use(async (ctx, next) => {
     ctx.pug.locals.csrf = ctx.csrf;
+    ctx.pug.locals.flash = ctx.flash;
 
     await next();
   })
