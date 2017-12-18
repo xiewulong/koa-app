@@ -22,13 +22,14 @@ const i18n = require('koa-i18n');
 const locale = require('koa-locale');
 const mailer = require('koa-mailer-v2');
 const Pug = require('koa-pug');
+const redis = require('koa-redis');
 const session = require('koa-session');
 const controllers = require('./controllers');
 
 const app = module.exports = new Koa();
 const development = app.env === 'development';
 
-app.keys = ['COOKIE SECRET KEY BASE'];
+app.keys = [process.env.APP_SECRET_KEY_BASE];
 app.context.pug = new Pug({
   app,
   // basedir: '',
@@ -40,18 +41,25 @@ app.context.pug = new Pug({
   pretty: development,
   viewPath: 'views',
 });
+app.context.redis = redis({
+  url: process.env.APP_REDIS_MASTER,
+});
 
 locale(app);
 
 app
   .use(session({
-    // domain: ${ctx.host},
+    domain: process.env.APP_SESSION_DOMAIN,
     // httpOnly: true,
-    // key: 'koa:sess',
+    key: process.env.APP_SESSION_KEY,
     // maxAge: 86400000,
     // overwrite: true,
     // rolling: false,
     // signed: true,
+    store: redis({
+      url: process.env.APP_REDIS_MASTER,
+      prefix: 'session:',
+    }),
   }, app))
   // .use(new CSRF({
   //   // invalidSessionSecretMessage: 'Invalid session secret',
