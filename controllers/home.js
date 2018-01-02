@@ -14,13 +14,6 @@ router
   .prefix('/home')
   .redirect('/', 'home')
   .get('home', '/index', async (ctx, next) => {
-    // let counter = await ctx.redis.get('test:counter');
-    // console.dir(counter);
-    // if(!counter) {
-    //   ctx.redis.set('test:a:counter', '1');
-    // } else {
-    //   ctx.redis.set('test:a:counter', counter + 1);
-    // }
     ctx.render('home/index.html');
   })
   .get('/hello', async (ctx, next) => {
