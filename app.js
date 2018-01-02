@@ -21,6 +21,7 @@ const flash = require('koa-flash');
 const i18n = require('koa-i18n');
 const locale = require('koa-locale');
 const mailer = require('koa-mailer-v2');
+const mongo = require('koa-mongo');
 const Pug = require('koa-pug');
 const redis = require('koa-redis');
 const session = require('koa-session');
@@ -48,6 +49,11 @@ app.context.redis = redis({
 locale(app);
 
 app
+  .use(mongo({
+    uri: process.env.APP_MONGO,
+    // max: 100,
+    // min: 1
+  }))
   .use(session({
     domain: process.env.APP_SESSION_DOMAIN,
     // httpOnly: true,
