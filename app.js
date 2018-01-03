@@ -76,7 +76,18 @@ app
   //   // disableQuery: false,
   // }))
   .use(flash())
-  .use(bodyparser())
+  .use(bodyparser({
+    // detectJSON: (ctx) => {},
+    // disableBodyParser: false,
+    // enableTypes: ['json', 'form'],
+    // encode: 'utf-8',
+    // extendTypes: [],
+    // formLimit: '56kb',
+    // jsonLimit: '1mb',
+    // onerror: (err, ctx) => {},
+    // strict: true,
+    // textLimit: '1mb',
+  }))
   .use(i18n(app, {
     directory: 'locales',
     locales: ['zh-CN', 'en'],   // `zh-CN` defualtLocale, must match the locales to the filenames
