@@ -14,6 +14,12 @@ router
   .prefix('/home')
   .redirect('/', 'home')
   .get('home', '/index', async (ctx, next) => {
+    // console.log(await ctx.rbac.check('read'));
+    // console.log(await ctx.rbac.check('create'));
+    // console.log(await ctx.rbac.check('update'));
+    // console.log(await ctx.rbac.check('delete'));
+    // console.log(await ctx.rbac.check('manage'));
+
     ctx.render('home/index.html');
   })
   .get('/hello', async (ctx, next) => {

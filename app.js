@@ -23,9 +23,11 @@ const locale = require('koa-locale');
 const mailer = require('koa-mailer-v2');
 const mongo = require('koa-mongo');
 const Pug = require('koa-pug');
+const rbac = require('koa-rbac');
 const redis = require('koa-redis');
 const session = require('koa-session');
 const controllers = require('./controllers');
+const ability = require('./ability');
 
 const app = module.exports = new Koa();
 const development = app.env === 'development';
@@ -123,6 +125,15 @@ app
 
     await next();
   })
+  .use(rbac({
+    rbac: ability,
+    identity: ctx => 'john.smith',
+    // identity: ctx => ctx && ctx.user,
+    // restrictionHandler(ctx, permissions, redirectUrl) {
+    //   ctx.status = 403;
+    // },
+  }))
+  .use(rbac.allow(['read']))
   .use(controllers.routes(), controllers.allowedMethods())
   .use(async (ctx) => {
     ctx.status = 404;
