@@ -6,6 +6,9 @@
  */
 'use strict';
 
+const fs = require('fs');
+const mongo = require('koa-mongo');
+const multer = require('koa-multer');
 const Router = require('koa-router');
 
 const router = module.exports = new Router();
@@ -41,5 +44,12 @@ router
     });
 
     ctx.body = 'Sent!';
+  })
+  .get('/file', async (ctx, next) => {
+    ctx.render('home/file.html');
+  })
+  .post('/upload', multer({dest: './tmp'}).single('file'), async (ctx, next) => {
+    ctx.body = await ctx.mongo.bucket.upload(ctx.req.file.path, ctx.req.file.originalname);
+    fs.unlink(ctx.req.file.path);
   })
   ;

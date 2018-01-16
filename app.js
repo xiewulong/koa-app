@@ -13,6 +13,8 @@
  */
 'use strict';
 
+const child_process = require('child_process');
+const fs = require('fs');
 const yaml = require('js-yaml');
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
@@ -22,12 +24,13 @@ const i18n = require('koa-i18n');
 const locale = require('koa-locale');
 const mailer = require('koa-mailer-v2');
 const mongo = require('koa-mongo');
+const mongo_bucket = require('koa-mongo-bucket');
 const Pug = require('koa-pug');
 const rbac = require('koa-rbac');
 const redis = require('koa-redis');
 const session = require('koa-session');
-const controllers = require('./controllers');
 const ability = require('./ability');
+const controllers = require('./controllers');
 
 const app = module.exports = new Koa();
 const development = app.env === 'development';
@@ -56,6 +59,7 @@ app
     // max: 100,
     // min: 1
   }))
+  .use(mongo_bucket())
   .use(session({
     domain: process.env.APP_SESSION_DOMAIN,
     // httpOnly: true,
@@ -156,3 +160,11 @@ app
 
 // !module.parent && app.listen(process.env.APP_PORT);
 app.listen(process.env.APP_PORT);
+
+// listener
+[
+  'controllers',
+  'locales',
+  'ability.js',
+  'app.js',
+].forEach((filename) => fs.watch(filename, {recursive: true}, (eventType, filename) => child_process.exec('npm run restart')));
