@@ -50,6 +50,6 @@ router
   })
   .post('/upload', multer({dest: './tmp'}).single('file'), async (ctx, next) => {
     ctx.body = await ctx.mongo.bucket.upload(ctx.req.file.path, ctx.req.file.originalname);
-    fs.unlink(ctx.req.file.path);
+    fs.unlink(ctx.req.file.path, err => {});
   })
   ;
