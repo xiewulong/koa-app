@@ -2,6 +2,5 @@ extends ../layouts/application.html.pug
 
 block content
   form(action="/home/upload" method="post" enctype="multipart/form-data")
-    input(type="hidden" name="test" value="test")
     input(type="file" name="file")
-    button(type="submit") 上传
+    button(type="submit")= i18n.__('upload')

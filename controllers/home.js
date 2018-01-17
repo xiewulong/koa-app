@@ -49,7 +49,24 @@ router
     ctx.render('home/file.html');
   })
   .post('/upload', multer({dest: './tmp'}).single('file'), async (ctx, next) => {
-    ctx.body = await ctx.mongo.bucket.upload(ctx.req.file.path, ctx.req.file.originalname);
+    let file = await ctx.mongo.bucket.upload(ctx.req.file.path, ctx.req.file.originalname);
     fs.unlink(ctx.req.file.path, err => {});
+
+    ctx.redirect(`/home/files/${file._id}`);
+  })
+  .get('/files/:id', async (ctx, next) => {
+    let file = await ctx.mongo.collection('fs.files').findOne({_id: mongo.ObjectId(ctx.params.id)});
+
+    ctx.etag = file.md5;
+    ctx.lastModified = file.uploadDate;
+    ctx.status = 200;
+    if(ctx.fresh) {
+      return ctx.status = 304;
+    }
+
+    ctx.type = file.filename;
+    (ctx.query.download || !/^image\/.*$/.test(ctx.type)) && ctx.attachment(file.filename);
+
+    ctx.body = await ctx.mongo.bucket.stream(file._id);
   })
   ;
