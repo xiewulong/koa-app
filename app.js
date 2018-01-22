@@ -15,6 +15,8 @@
 
 const child_process = require('child_process');
 const fs = require('fs');
+const path = require('path');
+const log4js = require('log4js');
 const yaml = require('js-yaml');
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
@@ -31,17 +33,42 @@ const redis = require('koa-redis');
 const session = require('koa-session');
 const ability = require('./ability');
 const controllers = require('./controllers');
+const pkg = require('./package.json');
 
 const app = module.exports = new Koa();
 const development = app.env === 'development';
 
+log4js.configure({
+  appenders: {
+    console: {type: 'console'},
+    dateFile: {
+      type: 'dateFile',
+      filename: path.join('log', `${app.env}.log`),
+      options: {keepFileExt: true},
+      pattern: '.yyyyMMdd',
+      layout: {
+        type: 'pattern',
+        pattern: '%d{yyyy-MM-dd hh:mm:ss.SSS}  %p [%x{name},ceb3bdbe38e9e5e8,ceb3bdbe38e9e5e8,true] %z --- [nio-9080-exec-2] c.c.l.c.a.filter.util.UserClaims         : %m',
+        tokens: {
+          name: pkg.name,
+        },
+      },
+    },
+  },
+  categories: {
+    default: {appenders: ['console', 'dateFile'], level: development && 'debug' || 'info'},
+  },
+  disableClustering: true,
+});
+
 app.keys = [process.env.APP_SECRET_KEY_BASE];
+app.context.logger = log4js.getLogger();
 app.context.pug = new Pug({
   app,
   // basedir: '',
   compileDebug: development,
   debug: development,
-  // helperPath: [],
+  helperPath: [],
   locals: {},
   noCache: development,
   pretty: development,
@@ -73,14 +100,14 @@ app
       prefix: 'session:',
     }),
   }, app))
-  // .use(new CSRF({
-  //   // invalidSessionSecretMessage: 'Invalid session secret',
-  //   // invalidSessionSecretStatusCode: 403,
-  //   // invalidTokenMessage: 'Invalid CSRF token',
-  //   // invalidTokenStatusCode: 403,
-  //   // excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
-  //   // disableQuery: false,
-  // }))
+  .use(new CSRF({
+    // invalidSessionSecretMessage: 'Invalid session secret',
+    // invalidSessionSecretStatusCode: 403,
+    // invalidTokenMessage: 'Invalid CSRF token',
+    // invalidTokenStatusCode: 403,
+    // excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
+    // disableQuery: false,
+  }))
   .use(flash())
   .use(bodyparser({
     // detectJSON: (ctx) => {},
@@ -127,7 +154,9 @@ app
     ctx.pug.locals.csrf = ctx.csrf;
     ctx.pug.locals.flash = ctx.flash;
 
+    let start = Date.now();
     await next();
+    ctx.logger.info(`${ctx.method} ${ctx.url} - ${Date.now() - start}ms`);
   })
   .use(rbac({
     rbac: ability,
@@ -158,8 +187,8 @@ app
   })
   ;
 
-// !module.parent && app.listen(process.env.APP_PORT);
-app.listen(process.env.APP_PORT);
+// !module.parent &&
+  app.listen(process.env.APP_PORT, () => app.context.logger.info(`${pkg.name} is running${process.env.APP_PORT &&  ' at ' + process.env.APP_PORT || ''}.`));
 
 // listener
 [
