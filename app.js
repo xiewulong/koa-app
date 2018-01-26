@@ -168,7 +168,7 @@ app
   }))
   .use(rbac.allow(['read']))
   .use(controllers.routes(), controllers.allowedMethods())
-  .use(async (ctx) => {
+  .use(async ctx => {
     ctx.status = 404;
 
     let text = 'Page Not Found';
@@ -191,9 +191,9 @@ app
   app.listen(process.env.APP_PORT, () => app.context.logger.info(`${pkg.name} is running${process.env.APP_PORT &&  ' at ' + process.env.APP_PORT || ''}.`));
 
 // listener
-[
+development && [
   'controllers',
   'locales',
   'ability.js',
   'app.js',
-].forEach((filename) => fs.watch(filename, {recursive: true}, (eventType, filename) => child_process.exec('npm run restart')));
+].forEach(filename => fs.watch(filename, {recursive: true}, (eventType, filename) => child_process.exec('npm run restart')));
