@@ -31,6 +31,7 @@ const Pug = require('koa-pug');
 const rbac = require('koa-rbac');
 const redis = require('koa-redis');
 const session = require('koa-session');
+const static_middleware = require('koa-static');
 const ability = require('./ability');
 const controllers = require('./controllers');
 const pkg = require('./package.json');
@@ -81,6 +82,16 @@ app.context.redis = redis({
 locale(app);
 
 app
+  .use(static_middleware('public', {
+    // br: true,              // Try to serve the brotli version of a file automatically when brotli is supported by a client and if the requested file with .br extension exists (note, that brotli is only accepted over https)
+    // defer: false,          // If true, serves after return next(), allowing any downstream middleware to respond first.
+    // extensions: false,     // Try to match extensions from passed array to search for file when no extension is sufficed in URL. First found is served
+    // gzip: true,            // Try to serve the gzipped version of a file automatically when gzip is supported by a client and if the requested file with .gz extension exists
+    // hidden: false,         // Allow transfer of hidden files
+    // index: 'index.html',   // Default file name
+    // maxage: 0,             // Browser cache max-age in milliseconds
+    // setHeaders: {},        // Function to set custom headers on response
+  }))
   .use(mongo({
     uri: process.env.APP_MONGO,
     // max: 100,
