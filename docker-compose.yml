@@ -1,6 +1,6 @@
 koa_app:
   container_name: koa_app
-  image: ${APP_IMAGE_HOST}/xiewulong/test:${APP_IMAGE_TAG}
+  image: ${APP_IMAGE_HOST}/koa_app:latest
   restart: always
   ports:
     - 3000:3000
