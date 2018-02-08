@@ -21,6 +21,7 @@ const yaml = require('js-yaml');
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
 const CSRF = require('koa-csrf');
+const devise = require('koa-devise');
 const flash = require('koa-flash');
 const i18n = require('koa-i18n');
 const locale = require('koa-locale');
@@ -104,6 +105,7 @@ app
     key: process.env.APP_SESSION_KEY,
     // maxAge: 86400000,
     // overwrite: true,
+    // renew: false,
     // rolling: false,
     // signed: true,
     store: redis({
@@ -169,6 +171,19 @@ app
     await next();
     ctx.logger.info(`${ctx.method} ${ctx.url} - ${Date.now() - start}ms`);
   })
+  .use(devise({
+    // context_key: 'user',       // Identity key in context, default: user
+    // login_url: '/user/login',  // Login in url for session none, default: '/user/login'
+    // session_key: 'user',       // Devise key in session, default: user
+    // timeout_in: 0,             // Expire time, default: 0 is session max age
+  }, (id) => {
+    // Return user identity after get user by id, it can be a promise
+    return {
+      id: 1,
+      username: 'Username',
+      // ...
+    };
+  }))
   .use(rbac({
     rbac: ability,
     identity: ctx => 'john.smith',
