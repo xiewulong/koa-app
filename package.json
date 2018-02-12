@@ -27,6 +27,7 @@
     "js-yaml": "^3.10.0",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
+    "koa-captcha-v2": "^0.0.1",
     "koa-csrf": "^3.0.6",
     "koa-devise": "^0.0.1",
     "koa-flash": "^1.0.0",
