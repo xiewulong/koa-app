@@ -114,14 +114,6 @@ app
       prefix: 'session:',
     }),
   }, app))
-  .use(new CSRF({
-    // invalidSessionSecretMessage: 'Invalid session secret',
-    // invalidSessionSecretStatusCode: 403,
-    // invalidTokenMessage: 'Invalid CSRF token',
-    // invalidTokenStatusCode: 403,
-    // excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
-    // disableQuery: false,
-  }))
   .use(flash())
   .use(bodyparser({
     // detectJSON: (ctx) => {},
@@ -134,6 +126,14 @@ app
     // onerror: (err, ctx) => {},
     // strict: true,
     // textLimit: '1mb',
+  }))
+  .use(new CSRF({
+    // invalidSessionSecretMessage: 'Invalid session secret',
+    // invalidSessionSecretStatusCode: 403,
+    // invalidTokenMessage: 'Invalid CSRF token',
+    // invalidTokenStatusCode: 403,
+    // excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
+    // disableQuery: false,
   }))
   .use(i18n(app, {
     directory: 'locales',
