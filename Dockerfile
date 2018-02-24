@@ -4,6 +4,7 @@ MAINTAINER xiewulong <xiewulong@vip.qq.com>
 
 WORKDIR /usr/local/lib/node_modules/npm
 RUN apk add --no-cache --virtual .build-deps g++ gcc libc6-compat make python \
+    cairo cairo-dev cairomm-dev libjpeg-turbo-dev pango pango-dev pangomm pangomm-dev giflib-dev \
     && /usr/local/bin/npm i --registry=https://registry.npm.taobao.org cnpm \
     && rm -rf package-lock.json \
     && ln -sf /usr/local/lib/node_modules/npm/node_modules/cnpm/bin/cnpm /usr/local/bin/cnpm
