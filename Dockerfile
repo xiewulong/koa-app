@@ -1,23 +1,14 @@
-FROM node:carbon-alpine
+FROM xiewulong/nginx-passenger:latest
 
-MAINTAINER xiewulong <xiewulong@vip.qq.com>
-
-WORKDIR /usr/local/lib/node_modules/npm
 RUN apk add --no-cache --virtual .build-deps \
-            g++ gcc libc6-compat make python \
-            cairo cairo-dev cairomm-dev giflib-dev libjpeg-turbo-dev pango pango-dev pangomm pangomm-dev \
-    && /usr/local/bin/npm i --registry=https://registry.npm.taobao.org cnpm \
-    && rm -rf package-lock.json \
-    && ln -sf /usr/local/lib/node_modules/npm/node_modules/cnpm/bin/cnpm /usr/local/bin/cnpm
+            cairo cairo-dev cairomm-dev giflib-dev libc6-compat libjpeg-turbo-dev pango pango-dev pangomm pangomm-dev \
+    # && apk del .build-deps \
+    \
+    && npm i --registry=https://registry.npm.taobao.org cnpm
 
 ENV APP_PORT 3000
 EXPOSE 3000
 
-ENTRYPOINT ["/usr/local/bin/npm"]
-CMD ["test"]
-
-WORKDIR /home/node/app
-VOLUME ["/home/node/app/log", "/home/node/app/tmp"]
-
-ADD . .
-RUN /usr/local/bin/cnpm i
+VOLUME ["/home/www/app", "/home/www/nginx/conf/nginx.conf", "/home/www/nginx/vhost.conf"]
+ENTRYPOINT ["/usr/local/nginx/sbin/nginx"]
+CMD ["-p", "/home/www/nginx"]

@@ -1,0 +1,21 @@
+FROM node:carbon-alpine
+
+RUN apk add --no-cache --virtual .build-deps \
+            curl g++ gcc gnupg linux-headers make python \
+            cairo cairo-dev cairomm-dev giflib-dev libc6-compat libjpeg-turbo-dev pango pango-dev pangomm pangomm-dev \
+    # && apk del .build-deps \
+    \
+    && /usr/local/bin/npm i --registry=https://registry.npm.taobao.org cnpm \
+    && rm -rf /usr/local/lib/node_modules/npm/package-lock.json \
+    && ln -sf /usr/local/lib/node_modules/npm/node_modules/cnpm/bin/cnpm /usr/local/bin/cnpm
+
+ENV APP_PORT 3000
+EXPOSE 3000
+
+VOLUME ["/home/node/app/log", "/home/node/app/tmp"]
+ENTRYPOINT ["/usr/local/bin/npm"]
+CMD ["test"]
+
+WORKDIR /home/node/app
+ADD . .
+RUN /usr/local/bin/cnpm i

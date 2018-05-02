@@ -1,21 +1,26 @@
-koa_app:
-  container_name: koa_app
-  image: ${APP_IMAGE_HOST}/koa_app:latest
-  restart: always
-  ports:
-    - 3000:3000
-  volumes:
-    - ./log:/home/node/app/log
-    - ./tmp:/home/node/app/tmp
-  environment:
-    NODE_ENV: ${NODE_ENV}
-    APP_MAILER_FROM: ${APP_MAILER_FROM}
-    APP_MAILER_SMTP_ADDRESS: ${APP_MAILER_SMTP_ADDRESS}
-    APP_MAILER_SMTP_PORT: ${APP_MAILER_SMTP_PORT}
-    APP_MAILER_SMTP_USERNAME: ${APP_MAILER_SMTP_USERNAME}
-    APP_MAILER_SMTP_PASSWORD: ${APP_MAILER_SMTP_PASSWORD}
-    APP_MONGO: ${APP_MONGO}
-    APP_REDIS_MASTER: ${APP_REDIS_MASTER}
-    APP_SECRET_KEY_BASE: ${APP_SECRET_KEY_BASE}
-    APP_SESSION_KEY: ${APP_SESSION_KEY}
-    APP_SESSION_DOMAIN: ${APP_SESSION_DOMAIN}
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: koa_app
+    image: koa-app
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/www/app
+      - ./nginx/conf/nginx.conf:/home/www/nginx/conf/nginx.conf
+      - ./nginx/vhost.conf:/home/www/nginx/vhost.conf
+    environment:
+      APP_MAILER_FROM: ${APP_MAILER_FROM}
+      APP_MAILER_SMTP_ADDRESS: ${APP_MAILER_SMTP_ADDRESS}
+      APP_MAILER_SMTP_PORT: ${APP_MAILER_SMTP_PORT}
+      APP_MAILER_SMTP_USERNAME: ${APP_MAILER_SMTP_USERNAME}
+      APP_MAILER_SMTP_PASSWORD: ${APP_MAILER_SMTP_PASSWORD}
+      APP_MONGO: ${APP_MONGO}
+      APP_REDIS_MASTER: ${APP_REDIS_MASTER}
+      APP_SECRET_KEY_BASE: ${APP_SECRET_KEY_BASE}
+      APP_SESSION_KEY: ${APP_SESSION_KEY}
+      APP_SESSION_DOMAIN: ${APP_SESSION_DOMAIN}
