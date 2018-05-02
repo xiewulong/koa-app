@@ -1,9 +1,8 @@
 FROM node:carbon-alpine
 
-RUN apk add --no-cache --virtual .build-deps \
+RUN apk add --no-cache \
             curl g++ gcc gnupg linux-headers make python \
             cairo cairo-dev cairomm-dev giflib-dev libc6-compat libjpeg-turbo-dev pango pango-dev pangomm pangomm-dev \
-    # && apk del .build-deps \
     \
     && /usr/local/bin/npm i --registry=https://registry.npm.taobao.org cnpm \
     && rm -rf /usr/local/lib/node_modules/npm/package-lock.json \
