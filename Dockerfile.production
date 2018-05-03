@@ -12,8 +12,8 @@ ENV APP_PORT 3000
 EXPOSE 3000
 
 VOLUME ["/home/node/app/log", "/home/node/app/tmp"]
-ENTRYPOINT ["/usr/local/bin/npm"]
-CMD ["test"]
+ENTRYPOINT []
+CMD ["/usr/local/bin/npm", "test"]
 
 WORKDIR /home/node/app
 ADD . .

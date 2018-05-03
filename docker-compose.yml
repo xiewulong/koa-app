@@ -4,21 +4,25 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: koa_app
-    image: koa-app
     restart: always
     ports:
-      - 3000:3000
+      - 30303:80
     volumes:
-      - .:/home/app
+      - .:/home/www/app
     environment:
       APP_MAILER_FROM: ${APP_MAILER_FROM}
       APP_MAILER_SMTP_ADDRESS: ${APP_MAILER_SMTP_ADDRESS}
       APP_MAILER_SMTP_PORT: ${APP_MAILER_SMTP_PORT}
       APP_MAILER_SMTP_USERNAME: ${APP_MAILER_SMTP_USERNAME}
       APP_MAILER_SMTP_PASSWORD: ${APP_MAILER_SMTP_PASSWORD}
-      APP_MONGO: ${APP_MONGO}
-      APP_REDIS_MASTER: ${APP_REDIS_MASTER}
+      APP_MONGO: mongodb://mongo:27017/app
+      APP_REDIS_MASTER: redis://redis:6379/0
       APP_SECRET_KEY_BASE: ${APP_SECRET_KEY_BASE}
       APP_SESSION_KEY: ${APP_SESSION_KEY}
       APP_SESSION_DOMAIN: ${APP_SESSION_DOMAIN}
+  mongo:
+    image: mongo:latest
+    restart: always
+  redis:
+    image: redis:latest
+    restart: always

@@ -6,6 +6,13 @@
   "main": "app.js",
   "scripts": {
     "restart": "touch ./tmp/restart.txt",
+    "service": "docker-compose up -d",
+    "service:down": "docker-compose down",
+    "service:down:all": "docker-compose down --rmi all",
+    "service:rebuild": "docker-compose up --build -d",
+    "service:recreate": "docker-compose up --force-recreate -d",
+    "service:restart": "docker-compose restart",
+    "service:stop": "docker-compose stop",
     "test": "node ./app"
   },
   "repository": {
