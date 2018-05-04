@@ -51,7 +51,7 @@ log4js.configure({
       pattern: '.yyyyMMdd',
       layout: {
         type: 'pattern',
-        pattern: '%d{yyyy-MM-dd hh:mm:ss.SSS}  %p [%x{name},ceb3bdbe38e9e5e8,ceb3bdbe38e9e5e8,true] %z --- [nio-9080-exec-2] c.c.l.c.a.filter.util.UserClaims         : %m',
+        pattern: '%d{yyyy-MM-dd hh:mm:ss.SSS} %p %x{name} %z: %m',
         tokens: {
           name: pkg.name,
         },
@@ -136,7 +136,7 @@ app
     // disableQuery: false,
   }))
   .use(i18n(app, {
-    directory: 'locales',
+    directory: 'i18n',
     locales: ['zh-CN', 'en'],   // `zh-CN` defualtLocale, must match the locales to the filenames
     extension: '.yml',
     parse: data => yaml.safeLoad(data),
@@ -236,7 +236,7 @@ app
 // listener
 development && [
   'controllers',
-  'locales',
+  'i18n',
   'ability.js',
   'app.js',
 ].forEach(filename => fs.watch(filename, {recursive: true}, (eventType, filename) => child_process.exec('npm run restart')));
