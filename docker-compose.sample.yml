@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - 30303:80
+      - 8584:80
     volumes:
       - .:/home/www/app
     environment:
