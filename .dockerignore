@@ -60,6 +60,9 @@ typings/
 # Visual Studio Code
 .vscode
 
+# Docker compose
+docker-compose.yml
+
 # Custom
 .git
 log
