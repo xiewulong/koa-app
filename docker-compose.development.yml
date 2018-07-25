@@ -1,13 +1,14 @@
 version: '3'
 services:
   web:
-    image: ${APP_IMAGE_HOST}/koa-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.development
     restart: unless-stopped
     ports:
       - 80
     volumes:
-      - ./log:/app/log
-      - ./tmp:/app/tmp
+      - .:/app
     environment:
       APP_MAILER_FROM: ${APP_MAILER_FROM}
       APP_MAILER_SMTP_ADDRESS: ${APP_MAILER_SMTP_ADDRESS}
@@ -19,7 +20,6 @@ services:
       APP_SECRET_KEY_BASE: ${APP_SECRET_KEY_BASE}
       APP_SESSION_KEY: ${APP_SESSION_KEY}
       APP_SESSION_DOMAIN: ${APP_SESSION_DOMAIN}
-      NODE_ENV: production
   mongo:
     image: mongo:latest
     restart: unless-stopped

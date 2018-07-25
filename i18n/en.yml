@@ -1,3 +1,30 @@
-hello: Hello world!
-mail_text: It's just a test mail!
-upload: Upload
+app:
+  name: Koa app
+  words:
+    hello: Hello
+    login: &login Login
+    logout: Logout
+    not_found: Page Not Found
+    operation_succeeded: Operation succeeded
+    test_mail: It's just a test mail!
+views:
+  api:
+    index:
+      title: API
+  dashboard:
+    index:
+      title: Dashboard
+  home:
+    error:
+      title: Exception
+    index:
+      title: Home
+  user:
+    login:
+      title: *login
+      password:
+        label: Password
+        placeholder: Please enter your password
+      username:
+        label: Username
+        placeholder: Please enter your username

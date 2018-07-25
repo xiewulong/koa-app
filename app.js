@@ -3,13 +3,6 @@
  * xiewulong <xiewulong@vip.qq.com>
  * create: 2017/12/13
  * since: 0.0.1
- *
- * Required process.env
- * APP_MAILER_FROM
- * APP_MAILER_SMTP_ADDRESS
- * APP_MAILER_SMTP_PORT
- * APP_MAILER_SMTP_USERNAME
- * APP_MAILER_SMTP_PASSWORD
  */
 'use strict';
 
@@ -37,6 +30,7 @@ const static_middleware = require('koa-static');
 const ability = require('./ability');
 const controllers = require('./controllers');
 const pkg = require('./package.json');
+const User = require('./models/user');
 
 const app = module.exports = new Koa();
 const development = app.env === 'development';
@@ -183,27 +177,40 @@ app
     // type: 'character',        // Captcha type, default: random character
     // width: 160,               // Width, default: 160
   }))
-  .use(async (ctx, next) => {
-    ctx.pug.locals.csrf = ctx.csrf;
-    ctx.pug.locals.flash = ctx.flash;
-
-    let start = Date.now();
-    await next();
-    ctx.logger.info(`${ctx.method} ${ctx.url} - ${Date.now() - start}ms`);
-  })
   .use(devise({
     // context_key: 'user',       // Identity key in context, default: user
     // login_url: '/user/login',  // Login in url for session none, default: '/user/login'
     // session_key: 'user',       // Devise key in session, default: user
     // timeout_in: 0,             // Expire time, default: 0 is session max age
-  }, (id) => {
-    // Return user identity after get user by id, it can be a promise
-    return {
-      id: 1,
-      username: 'Username',
-      // ...
+  }, id => User.find(id)))
+  .use(async (ctx, next) => {
+    ctx.pug.locals.csrf = ctx.csrf;
+    ctx.pug.locals.current_user = ctx.user;
+    ctx.pug.locals.flash = ctx.flash;
+    ctx.pug.locals.version = development ? '' : pkg.version;
+    ctx.request.permit = (names = [], defaults = {}) => {
+      if(!ctx.request.body || !Object.keys(ctx.request.body).length) {
+        return defaults;
+      }
+
+      let params = {};
+      for(let name, param, i = 0, len = names.length; i < len; i++) {
+        name = names[i];
+        param = ctx.request.body[name];
+        if(param === undefined) {
+          continue;
+        }
+
+        params[name] = param;
+      }
+
+      return Object.assign({}, params, defaults);
     };
-  }))
+
+    let start = Date.now();
+    await next();
+    ctx.logger.info(`${ctx.method} ${ctx.url} - ${Date.now() - start}ms`);
+  })
   .use(rbac({
     rbac: ability,
     identity: ctx => 'john.smith',
@@ -217,18 +224,19 @@ app
   .use(async ctx => {
     ctx.status = 404;
 
-    let text = 'Page Not Found';
+    let message = ctx.i18n.__('app.words.not_found');
     switch(ctx.accepts('html', 'json')) {
       case 'html':
-        ctx.type = 'html';
-        ctx.body = `<p>${text}</p>`;
+        ctx.render('home/error.html', {message});
+        // ctx.type = 'html';
+        // ctx.body = `<p>${text}</p>`;
         break;
       case 'json':
-        ctx.body = {message: text};
+        ctx.body = {message};
         break;
       default:
         ctx.type = 'text';
-        ctx.body = text;
+        ctx.body = message;
     }
   })
   ;
@@ -236,10 +244,16 @@ app
 // !module.parent &&
   app.listen(process.env.APP_PORT, () => app.context.logger.info(`${pkg.name} is running${process.env.APP_PORT &&  ' at ' + process.env.APP_PORT || ''}.`));
 
-// listener
-development && [
-  'controllers',
-  'i18n',
-  'ability.js',
-  'app.js',
-].forEach(filename => fs.watch(filename, {recursive: true}, (eventType, filename) => child_process.exec('npm run restart')));
+// Listener
+development &&  [
+                  'controllers',
+                  // 'middlewares',
+                  'models',
+                  'ability.js',
+                  'app.js',
+                ].forEach(filename => {
+                  fs.watch(filename, {recursive: true}, (eventType, filename) => {
+                    app.context.logger.info(`${filename}: ${eventType}`);
+                    child_process.exec('touch ./tmp/restart.txt');
+                  });
+                });

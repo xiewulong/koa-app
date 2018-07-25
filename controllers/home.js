@@ -6,67 +6,52 @@
  */
 'use strict';
 
-const fs = require('fs');
-const mongo = require('koa-mongo');
-const multer = require('koa-multer');
+const devise = require('koa-devise');
 const Router = require('koa-router');
 
 const router = module.exports = new Router();
 
-router
-  .prefix('/home')
-  .redirect('/', 'home')
-  .get('home', '/index', async (ctx, next) => {
-    // console.log(await ctx.rbac.check('read'));
-    // console.log(await ctx.rbac.check('create'));
-    // console.log(await ctx.rbac.check('update'));
-    // console.log(await ctx.rbac.check('delete'));
-    // console.log(await ctx.rbac.check('manage'));
+router.prefix('/home');
 
-    ctx.render('home/index.html');
-  })
-  .get('/hello', async (ctx, next) => {
-    ctx.body = ctx.i18n.__('hello');
-  })
-  .get('/mailer', async (ctx, next) => {
-    ctx.mailer({
-      to: 'mail_to@domain.com',
-      subject: 'Test mail',
-      text: ctx.pug.render('mails/home_mailer.text', ctx.state),
-      html: ctx.pug.render('mails/home_mailer.html', ctx.state),
-    }, (error, info, nodemailer) => {
-      if (error) {
-        return console.log(error);
-      }
+// GET /home
+Router.api.tags.push({name: '/home', description: '首页', externalDocs: {description: '链接', url: '/home'}});
+router.get('GET_home', '/', async (ctx, next) => {
+  // console.log(await ctx.rbac.check('read'));
+  // console.log(await ctx.rbac.check('create'));
+  // console.log(await ctx.rbac.check('update'));
+  // console.log(await ctx.rbac.check('delete'));
+  // console.log(await ctx.rbac.check('manage'));
 
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    });
+  ctx.render('home/index.html');
+});
 
-    ctx.body = 'Sent!';
-  })
-  .get('/file', async (ctx, next) => {
-    ctx.render('home/file.html');
-  })
-  .post('/upload', multer({dest: './tmp'}).single('file'), async (ctx, next) => {
-    let file = await ctx.mongo.bucket.upload(ctx.req.file.path, ctx.req.file.originalname);
-    fs.unlink(ctx.req.file.path, err => {});
+// GET /home/hello
+Router.api.tags.push({name: '/home/hello', description: '欢迎页', externalDocs: {description: '链接', url: '/home/hello'}});
+router.get('GET_home_hello', '/hello', async (ctx, next) => {
+  ctx.body = ctx.i18n.__('app.words.hello');
+});
 
-    ctx.redirect(`/home/files/${file._id}`);
-  })
-  .get('/files/:id', async (ctx, next) => {
-    let file = await ctx.mongo.collection('fs.files').findOne({_id: mongo.ObjectId(ctx.params.id)});
+// GET /home/mailer
+Router.api.tags.push({name: '/home/mailer', description: '邮件发送', externalDocs: {description: '链接', url: '/home/mailer'}});
+router.get( 'GET_home_hello', '/mailer',
+            devise.authenticate(),
+            async (ctx, next) => {
+              ctx.mailer({
+                to: 'mail_to@domain.com',
+                subject: 'Test mail',
+                text: ctx.pug.render('mails/home_mailer.text', ctx.state),
+                html: ctx.pug.render('mails/home_mailer.html', ctx.state),
+              }, (error, info, nodemailer) => {
+                if (error) {
+                  return console.log(error);
+                }
 
-    ctx.etag = file.md5;
-    ctx.lastModified = file.uploadDate;
-    ctx.status = 200;
-    if(ctx.fresh) {
-      return ctx.status = 304;
-    }
+                console.log('Message sent: %s', info.messageId);
+                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+              });
 
-    ctx.type = file.filename;
-    (ctx.query.download || !/^image\/.*$/.test(ctx.type)) && ctx.attachment(file.filename);
+              ctx.body = 'Sent!';
+            });
 
-    ctx.body = await ctx.mongo.bucket.stream(file._id);
-  })
-  ;
+// Exception
+Router.api.tags.push({name: '/home/error', description: '异常处理', externalDocs: {description: '链接', url: '/home/error'}});
