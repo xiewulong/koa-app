@@ -1,7 +1,0 @@
-extends ../layouts/application.html.pug
-
-block content
-  form(action=`/home/upload?_csrf=${csrf}` method="post" enctype="multipart/form-data")
-    //- input(type="hidden" name="_csrf" value=csrf)
-    input(type="file" name="file")
-    button(type="submit")= i18n.__('upload')
