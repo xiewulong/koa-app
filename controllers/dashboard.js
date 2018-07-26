@@ -18,6 +18,6 @@ Router.api.tags.push({name: '/dashboard', description: '仪表盘', externalDocs
 router.get( 'GET_dashboard', '/',
             devise.authenticate(),
             async (ctx, next) => {
-              ctx.body = ctx.user
+              ctx.body = ctx.user;
               ctx.render('dashboard/index.html');
             });

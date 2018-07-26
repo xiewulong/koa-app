@@ -71,8 +71,8 @@ module.exports.default = module.exports = class User extends ActiveRequestBase {
   get attributes() {
     return {
       id: {original_name: 'user_id', primary_key: true}, // ID
-      username: {original_name: 'userName'}, // 用户名
-      password: {original_name: 'password_hash'}, // 密码
+      username: {original_name: 'userName', presence: true}, // 用户名
+      password: {original_name: 'password_hash', presence: true}, // 密码
     };
   }
 
@@ -86,8 +86,12 @@ module.exports.default = module.exports = class User extends ActiveRequestBase {
   login(attributes = {}) {
     this.clear_errors()
         .assign_attributes(attributes)
-        .assign_attributes({id: 1})
         ;
+
+    let params = this.extract_attributes([], true, 'login');
+    let data = this.extract_attributes(['username', 'password'], true, 'login');
+
+    this.is_valid && this.assign_attributes({id: 1});
 
     return this;
   }

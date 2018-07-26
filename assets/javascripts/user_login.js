@@ -20,7 +20,7 @@ document.getElementsByTagName('form')[0].onsubmit = function() {
   }).then(d => {
     window.location.href = d.data.redirect_to;
   }).catch(e => {
-    alert(e);
+    alert(e.response && e.response.data || e.message);
   });
 
   return false;

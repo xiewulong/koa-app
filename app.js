@@ -122,9 +122,9 @@ app
     // textLimit: '1mb',
   }))
   .use(new CSRF({
-    // invalidSessionSecretMessage: 'Invalid session secret',
+    invalidSessionSecretMessage: '{"session_secret": ["Invalid session secret"]}',
     // invalidSessionSecretStatusCode: 403,
-    // invalidTokenMessage: 'Invalid CSRF token',
+    invalidTokenMessage: '{"token": ["Invalid CSRF token"]}',
     // invalidTokenStatusCode: 403,
     // excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
     // disableQuery: false,
@@ -247,6 +247,7 @@ app
 // Listener
 development &&  [
                   'controllers',
+                  // 'i18n',
                   // 'middlewares',
                   'models',
                   'ability.js',
