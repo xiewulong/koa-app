@@ -18,7 +18,7 @@ services:
       APP_REDIS_MASTER: redis://redis:6379/0
       APP_SECRET_KEY_BASE: ${APP_SECRET_KEY_BASE}
       APP_SESSION_KEY: ${APP_SESSION_KEY}
-      APP_SESSION_DOMAIN: ${APP_SESSION_DOMAIN}
+      # APP_SESSION_DOMAIN: ${APP_SESSION_DOMAIN}
       NODE_ENV: production
   mongo:
     image: mongo:latest
