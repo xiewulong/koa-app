@@ -3,10 +3,10 @@ extends ../layouts/application.html.pug
 block title
   = `${__('views.dashboard.index.title')} - `
 
-block page_stylesheets
+append page_stylesheets
   link(rel="stylesheet" type="text/css" href=`/assets/css/dashboard.css?${version}`)
 
-block page_javascripts
+append page_javascripts
   script(type="text/javascript" src=`/assets/js/dashboard.js?${version}`)
 
 block content

@@ -3,10 +3,10 @@ extends ../layouts/api.html.pug
 block title
   = `${__('views.api.index.title')} - `
 
-block page_stylesheets
+append page_stylesheets
   link(rel="stylesheet" type="text/css" href=`/assets/css/api.css?${version}`)
 
-block page_javascripts
+append page_javascripts
   script(type="text/javascript" src=`/assets/js/api.js?${version}`)
 
 block content

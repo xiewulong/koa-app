@@ -184,7 +184,7 @@ app
     // timeout_in: 0,             // Expire time, default: 0 is session max age
   }, id => User.find(id)))
   .use(async (ctx, next) => {
-    ctx.pug.locals.csrf = ctx.csrf;
+    ctx.cookies.set('csrf-token', ctx.csrf, {httpOnly: false, signed: false});
     ctx.pug.locals.current_user = ctx.user;
     ctx.pug.locals.flash = ctx.flash;
     ctx.pug.locals.version = development ? '' : pkg.version;

@@ -10,9 +10,10 @@ import axios from 'axios';
 import qs from 'qs';
 
 // Axios
-axios.defaults.headers['csrf-token'] = document.querySelector('meta[name="csrf"]').getAttribute('content');
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.transformRequest = [data => qs.stringify(data)];
+axios.defaults.xsrfCookieName = 'csrf-token';
+axios.defaults.xsrfHeaderName = 'x-csrf-token';
 axios.interceptors.response.use(config => config, e => {
   if(e.response) {
     let data = [];

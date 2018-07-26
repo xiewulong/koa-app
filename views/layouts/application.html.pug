@@ -14,10 +14,9 @@ html(lang="zh-cn" xml:lang="zh-cn")
     meta(name="apple-mobile-web-app-capable" content="yes")
     meta(name="apple-touch-fullscreen" content="yes")
     meta(name="format-detection" content="telephone=no,email=no")
-    meta(name="csrf" content=csrf)
-    link(rel="stylesheet" type="text/css" href=`/assets/css/common.css?${version}`)
     block page_stylesheets
+      link(rel="stylesheet" type="text/css" href=`/assets/css/common.css?${version}`)
   body(ontouchstart)
     block content
-    script(type="text/javascript" src=`/assets/js/common.js?${version}`)
     block page_javascripts
+      script(type="text/javascript" src=`/assets/js/common.js?${version}`)

@@ -3,10 +3,10 @@ extends ../layouts/application.html.pug
 block title
   = `${__('views.user.login.title')} - `
 
-block page_stylesheets
+append page_stylesheets
   link(rel="stylesheet" type="text/css" href=`/assets/css/user_login.css?${version}`)
 
-block page_javascripts
+append page_javascripts
   script(type="text/javascript" src=`/assets/js/user_login.js?${version}`)
 
 block content
