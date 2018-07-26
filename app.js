@@ -185,8 +185,11 @@ app
   }, id => User.find(id)))
   .use(async (ctx, next) => {
     ctx.cookies.set('csrf-token', ctx.csrf, {httpOnly: false, signed: false});
+    ctx.pug.locals.author = pkg.author;
     ctx.pug.locals.current_user = ctx.user;
+    ctx.pug.locals.description = pkg.description;
     ctx.pug.locals.flash = ctx.flash;
+    ctx.pug.locals.keywords = pkg.keywords.join(', ');
     ctx.pug.locals.version = development ? '' : pkg.version;
     ctx.request.permit = (names = [], defaults = {}) => {
       if(!ctx.request.body || !Object.keys(ctx.request.body).length) {
