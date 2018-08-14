@@ -10,6 +10,8 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const WebpackMiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WebpackOptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const WebpackUglifyjsPlugin = require('uglifyjs-webpack-plugin');
 const pkg = require('./package.json');
 
 const base_path = __dirname;
@@ -101,11 +103,23 @@ module.exports = {
     ],
   },
   optimization: {
+    minimizer: [
+      new WebpackUglifyjsPlugin({
+        uglifyOptions: {
+          output: {comments: false},
+          ie8: false,
+        },
+      }),
+      new WebpackOptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {discardComments: {removeAll: true}},
+      }),
+    ],
     splitChunks: {
       cacheGroups: {
         common: {
           chunks: chunk => ['api'].indexOf(chunk.name) == -1,
           minChunks: 2,
+          minSize: 1,
           name: 'common',
         },
       },

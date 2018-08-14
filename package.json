@@ -7,7 +7,7 @@
   "scripts": {
     "app": "node ./app",
     "build": "npm run webpack -- --display-error-details --mode=production --optimize-minimize",
-    "dev": "npm run webpack -- --debug --mode=development --output-pathinfo --watch",
+    "dev": "npm run webpack -- --debug --devtool sourcemap --mode=development --output-pathinfo --watch",
     "release": "npm run build",
     "restart": "touch ./tmp/restart.txt",
     "service": "docker-compose up -d",
@@ -19,7 +19,7 @@
     "service:stop": "docker-compose stop",
     "test": "mocha",
     "start": "npm run dev",
-    "webpack": "webpack --colors --devtool sourcemap --progress"
+    "webpack": "webpack --colors --progress"
   },
   "repository": {
     "type": "git",
@@ -71,11 +71,13 @@
     "mini-css-extract-plugin": "^0.4.1",
     "mocha": "^5.2.0",
     "node-sass": "^4.9.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.0",
     "postcss-loader": "^2.1.6",
     "postcss-sprites": "^4.2.1",
     "qs": "^6.5.2",
     "sass-loader": "^7.0.3",
     "swagger-ui": "^3.17.5",
+    "uglifyjs-webpack-plugin": "^1.2.7",
     "url-loader": "^1.0.1",
     "webpack": "^4.16.2",
     "webpack-cli": "^3.1.0"
