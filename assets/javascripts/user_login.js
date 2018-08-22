@@ -9,7 +9,7 @@ import './common';
 import '../stylesheets/user_login.scss';
 import axios from 'axios';
 
-document.getElementsByTagName('form')[0].onsubmit = function() {
+document.getElementsByTagName('form')[0].onsubmit = function () {
   axios({
     url: '/user/login',
     method: 'post',

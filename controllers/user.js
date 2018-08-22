@@ -13,7 +13,7 @@ const router = module.exports = new Router();
 router.prefix('/user');
 
 // GET /user/login
-Router.api.tags.push({name: '/user/login', description: '用户登录页', externalDocs: {description: '链接', url: '/user/login'}});
+Router.api.tags.push({ name: '/user/login', description: '用户登录页', externalDocs: { description: '链接', url: '/user/login' } });
 router.get('GET_user_login', '/login', async (ctx, next) => {
   if(ctx.authenticate(false)) {
     return ctx.redirect(ctx.user_referrer || ctx.router.url('GET_dashboard'));
@@ -25,11 +25,11 @@ router.get('GET_user_login', '/login', async (ctx, next) => {
 // POST /user/login
 Router.api.paths['/user/login'] = {};
 Router.api.paths['/user/login']['post'] = {
-  tags: ['/user/login'],
+  tags: [ '/user/login' ],
   summary: '登录提交',
   operationId: 'POST_user_login',
   parameters: [
-    {'$ref': '#/definitions/CsrfParameter'},
+    { '$ref': '#/definitions/CsrfParameter' },
   ],
   requestBody: {
     description: '请求数据',
@@ -38,23 +38,23 @@ Router.api.paths['/user/login']['post'] = {
       'application/x-www-form-urlencoded': {
         schema: {
           // type: 'object',
-          required: ['mobile', 'password', 'sms_code'],
+          required: [ 'mobile', 'password', 'sms_code' ],
           properties: {
-            username: {description: '用户名', type: 'string', example: 'Koa'},
-            password: {description: '登录密码', type: 'string', example: '123456'},
+            username: { description: '用户名', type: 'string', example: 'Koa' },
+            password: { description: '登录密码', type: 'string', example: '123456' },
           },
         },
       },
     },
   },
   responses: {
-    '200': {description: '请求成功'},
-    '403': {description: '请求失败'},
-    '403.logined': {description: '用户已登录, 跳回首页'},
+    '200': { description: '请求成功' },
+    '403': { description: '请求失败' },
+    '403.logined': { description: '用户已登录, 跳回首页' },
   },
 };
 router.post('POST_user_login', '/login', async (ctx, next) => {
-  let user = new User(ctx.request.permit(['username', 'password']));
+  let user = new User(ctx.request.permit([ 'username', 'password' ]));
 
   if(ctx.authenticate(false)) {
     user.add_error('logined', '用户已登录');
@@ -79,15 +79,15 @@ router.post('POST_user_login', '/login', async (ctx, next) => {
 // POST /user/logout
 Router.api.paths['/user/logout'] = {};
 Router.api.paths['/user/logout']['post'] = {
-  tags: ['/dashboard'],
+  tags: [ '/dashboard' ],
   summary: '注销提交',
   operationId: 'POST_user_logout',
   parameters: [
-    {'$ref': '#/definitions/CsrfParameter'},
+    { '$ref': '#/definitions/CsrfParameter' },
   ],
   responses: {
-    '200': {description: '请求成功'},
-    '403': {description: '请求失败'},
+    '200': { description: '请求成功' },
+    '403': { description: '请求失败' },
   },
 };
 router.post('POST_user_logout', '/logout', async (ctx, next) => {

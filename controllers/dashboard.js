@@ -14,7 +14,7 @@ const router = module.exports = new Router();
 router.prefix('/dashboard');
 
 // GET /dashboard
-Router.api.tags.push({name: '/dashboard', description: '仪表盘', externalDocs: {description: '链接', url: '/dashboard'}});
+Router.api.tags.push({ name: '/dashboard', description: '仪表盘', externalDocs: { description: '链接', url: '/dashboard' } });
 router.get( 'GET_dashboard', '/',
             devise.authenticate(),
             async (ctx, next) => {

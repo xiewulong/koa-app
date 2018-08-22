@@ -13,8 +13,8 @@ const user = new User;
 
 describe(`Model User - 用户`, async () => {
 
-  it(`login({username: 'Koa', password: '123456'}) - 用户登录`, async () => {
-    await user.login({username: 'Koa', password: '123456'});
+  it(`login({ username: 'Koa', password: '123456' }) - 用户登录`, async () => {
+    await user.login({ username: 'Koa', password: '123456' });
     assert.equal(user.is_valid, true, user.error_messages.join(','));
   });
 

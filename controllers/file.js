@@ -23,7 +23,7 @@ Router.api.paths['/file']['post'] = {
   summary: '文件上传',
   operationId: 'POST_file',
   parameters: [
-    {'$ref': '#/definitions/CsrfParameter'},
+    { '$ref': '#/definitions/CsrfParameter' },
   ],
   requestBody: {
     description: '请求数据',
@@ -31,23 +31,23 @@ Router.api.paths['/file']['post'] = {
       'multipart/form-data': {
         schema: {
           type: 'object',
-          required: ['file'],
+          required: [ 'file' ],
           properties: {
-            file: {type: 'string', format: 'binary'},
+            file: { type: 'string', format: 'binary' },
           },
         },
       },
     },
   },
   responses: {
-    '200': {description: '请求成功'},
-    '401': {description: '请先登录再访问'},
-    '403': {description: '请求失败'},
+    '200': { description: '请求成功' },
+    '401': { description: '请先登录再访问' },
+    '403': { description: '请求失败' },
   },
 };
 router.post('POST_file', '/',
             devise.authenticate(false),
-            multer({dest: './tmp'}).single('file'),
+            multer({ dest: './tmp' }).single('file'),
             async (ctx, next) => {
               let error_message, file;
               try {
@@ -62,7 +62,7 @@ router.post('POST_file', '/',
               }
 
               ctx.body = {
-                id: error_message && [error_message] || file._id,
+                id: error_message && [ error_message ] || file._id,
               };
             });
 
@@ -92,17 +92,17 @@ Router.api.paths['/file/{id}']['get'] = {
     },
   ],
   responses: {
-    '200': {description: '请求成功'},
-    '403': {description: '请求失败'},
+    '200': { description: '请求成功' },
+    '403': { description: '请求失败' },
   },
 };
 router.get('GET_file_id', '/:id', async (ctx, next) => {
   let file;
   try {
-    file = await ctx.mongo.collection('fs.files').findOne({_id: mongo.ObjectId(ctx.params.id)});
+    file = await ctx.mongo.db().collection('fs.files').findOne({ _id: mongo.ObjectId(ctx.params.id) });
   } catch(e) {
     ctx.status = 403;
-    ctx.body = {id: [e.message]};
+    ctx.body = { id: [ e.message ] };
     return;
   }
 

@@ -70,9 +70,9 @@ module.exports.default = module.exports = class User extends ActiveRequestBase {
    */
   get attributes() {
     return {
-      id: {original_name: 'user_id', primary_key: true}, // ID
-      username: {original_name: 'userName', presence: true}, // 用户名
-      password: {original_name: 'password_hash', presence: true}, // 密码
+      id: { original_name: 'user_id', primary_key: true }, // ID
+      username: { original_name: 'userName', presence: true }, // 用户名
+      password: { original_name: 'password_hash', presence: true }, // 密码
     };
   }
 
@@ -89,9 +89,9 @@ module.exports.default = module.exports = class User extends ActiveRequestBase {
         ;
 
     let params = this.extract_attributes([], true, 'login');
-    let data = this.extract_attributes(['username', 'password'], true, 'login');
+    let data = this.extract_attributes([ 'username', 'password' ], true, 'login');
 
-    this.is_valid && this.assign_attributes({id: 1});
+    this.is_valid && this.assign_attributes({ id: 1 });
 
     return this;
   }
@@ -106,7 +106,7 @@ module.exports.default = module.exports = class User extends ActiveRequestBase {
   static find(id) {
     return {
       id: 1,
-      username: 'Koa'
+      username: 'Koa',
     };
   }
 

@@ -18,7 +18,7 @@ Router.api = {
     description: pkg.name,
     version: pkg.version,
   },
-  servers: [{url: '/', description: 'Development environment'}],
+  servers: [ { url: '/', description: 'Development environment' } ],
   tags: [],
   paths: {},
   definitions: {},

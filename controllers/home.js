@@ -14,7 +14,7 @@ const router = module.exports = new Router();
 router.prefix('/home');
 
 // GET /home
-Router.api.tags.push({name: '/home', description: '首页', externalDocs: {description: '链接', url: '/home'}});
+Router.api.tags.push({ name: '/home', description: '首页', externalDocs: { description: '链接', url: '/home' } });
 router.get('GET_home', '/', async (ctx, next) => {
   // console.log(await ctx.rbac.check('read'));
   // console.log(await ctx.rbac.check('create'));
@@ -26,13 +26,13 @@ router.get('GET_home', '/', async (ctx, next) => {
 });
 
 // GET /home/hello
-Router.api.tags.push({name: '/home/hello', description: '欢迎页', externalDocs: {description: '链接', url: '/home/hello'}});
+Router.api.tags.push({ name: '/home/hello', description: '欢迎页', externalDocs: { description: '链接', url: '/home/hello' } });
 router.get('GET_home_hello', '/hello', async (ctx, next) => {
   ctx.body = ctx.i18n.__('app.words.hello');
 });
 
 // GET /home/mailer
-Router.api.tags.push({name: '/home/mailer', description: '邮件发送', externalDocs: {description: '链接', url: '/home/mailer'}});
+Router.api.tags.push({ name: '/home/mailer', description: '邮件发送', externalDocs: { description: '链接', url: '/home/mailer' } });
 router.get( 'GET_home_hello', '/mailer',
             devise.authenticate(),
             async (ctx, next) => {
@@ -54,4 +54,4 @@ router.get( 'GET_home_hello', '/mailer',
             });
 
 // Exception
-Router.api.tags.push({name: '/home/error', description: '异常处理', externalDocs: {description: '链接', url: '/home/error'}});
+Router.api.tags.push({ name: '/home/error', description: '异常处理', externalDocs: { description: '链接', url: '/home/error' } });

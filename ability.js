@@ -8,7 +8,7 @@
 
 const rbac = require('koa-rbac');
 
-// rules
+// Rules
 const rules = {
   roles: {
     guest: {},
@@ -36,12 +36,12 @@ const rules = {
     },
   },
   users: {
-    'john.smith': ['editor'],
+    'Koa': ['editor'],
     'root': ['admin'],
   },
 }
 
-// permissions
+// Permissions
 module.exports.permissions = [
   'create',
   'delete',
@@ -50,7 +50,7 @@ module.exports.permissions = [
   'update',
 ];
 
-// attributes
+// Attributes
 const attributes = new rbac.RBAC.AttributesManager();
 
 attributes.set(function dailySchedule(user, role, params) {
@@ -71,7 +71,7 @@ attributes.set(function hasSuperPrivilege(user, role, params) {
   return true;
 });
 
-// provider
+// Provider
 const _ability = new rbac.RBAC.providers.JsonProvider(rules);
 
 class AbilityProvider extends rbac.RBAC.Provider {

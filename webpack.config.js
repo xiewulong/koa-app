@@ -20,7 +20,8 @@ const output_path = `${base_path}/public/assets/js`;
 
 let entries = {};
 fs.readdirSync(entry_path).forEach(filename => {
-  if(!fs.statSync(`${entry_path}/${filename}`).isFile()) return;
+  if (!fs.statSync(`${entry_path}/${filename}`).isFile()) return;
+
   let name = path.parse(filename).name;
   entries[name] = `${entry_path}/${name}`;
 });
@@ -35,7 +36,7 @@ module.exports = {
     alias: {
       // 'vue$': `vue/dist/vue.common.js`,
     },
-    // extensions: ['.js', '.web.js', '.webpack.js'],
+    // extensions: [ '.js', '.web.js', '.webpack.js' ],
   },
   externals: {
     // jquery: 'jQuery',
@@ -108,18 +109,18 @@ module.exports = {
     minimizer: [
       new WebpackUglifyjsPlugin({
         uglifyOptions: {
-          output: {comments: false},
+          output: { comments: false },
           ie8: false,
         },
       }),
       new WebpackOptimizeCSSAssetsPlugin({
-        cssProcessorOptions: {discardComments: {removeAll: true}},
+        cssProcessorOptions: { discardComments: { removeAll: true } },
       }),
     ],
     splitChunks: {
       cacheGroups: {
         common: {
-          chunks: chunk => ['api'].indexOf(chunk.name) == -1,
+          chunks: chunk => [ 'api' ].indexOf(chunk.name) == -1,
           minChunks: 2,
           minSize: 1,
           name: 'common',
@@ -129,6 +130,6 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new WebpackMiniCssExtractPlugin({filename: '../css/[name].css'}),
+    new WebpackMiniCssExtractPlugin({ filename: '../css/[name].css' }),
   ],
 };
