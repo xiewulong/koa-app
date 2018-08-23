@@ -7,6 +7,7 @@
 
 import '../../stylesheets/common.scss';
 import axios from 'axios';
+import 'core-js/fn/promise/finally';
 import qs from 'qs';
 
 // Axios

@@ -27,6 +27,7 @@ const rbac = require('koa-rbac');
 const redis = require('koa-redis');
 const session = require('koa-session');
 const static_middleware = require('koa-static');
+
 const ability = require('./ability');
 const controllers = require('./controllers');
 const pkg = require('./package.json');
@@ -109,7 +110,7 @@ app .use(static_middleware('public', {
     }, app))
     .use(flash())
     .use(bodyparser({
-      // detectJSON: (ctx) => {},
+      // detectJSON: ctx => {},
       // disableBodyParser: false,
       // enableTypes: ['json', 'form'],
       // encode: 'utf-8',
@@ -206,7 +207,7 @@ app .use(static_middleware('public', {
           params[name] = param;
         }
 
-        return Object.assign({}, params, defaults);
+        return { ...params, ...defaults };
       };
 
       let start = Date.now();

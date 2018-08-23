@@ -13,31 +13,31 @@ const rules = {
   roles: {
     guest: {},
     reader: {
-      permissions: ['read'],
-      inherited: ['guest'],
+      permissions: [ 'read' ],
+      inherited: [ 'guest' ],
     },
     writer: {
-      permissions: ['create'],
-      inherited: ['reader'],
+      permissions: [ 'create' ],
+      inherited: [ 'reader' ],
     },
     editor: {
-      permissions: ['update'],
-      inherited: ['reader'],
-      attributes: ['dailySchedule'],
+      permissions: [ 'update' ],
+      inherited: [ 'reader' ],
+      attributes: [ 'dailySchedule' ],
     },
     director: {
-      permissions: ['delete'],
-      inherited: ['reader', 'editor'],
+      permissions: [ 'delete' ],
+      inherited: [ 'reader', 'editor' ],
     },
     admin: {
-      permissions: ['manage'],
-      inherited: ['director'],
-      attributes: ['hasSuperPrivilege'],
+      permissions: [ 'manage' ],
+      inherited: [ 'director' ],
+      attributes: [ 'hasSuperPrivilege' ],
     },
   },
   users: {
-    'Koa': ['editor'],
-    'root': ['admin'],
+    'Koa': [ 'editor' ],
+    'root': [ 'admin' ],
   },
 }
 
