@@ -1,7 +1,7 @@
 extends ../layouts/application.html.pug
 
-block title
-  = `${__('views.home.index.title')} - `
+append title
+  = ` - ${__('views.home.index.title')}`
 
 append page_stylesheets
   link(rel="stylesheet" type="text/css" href=`/assets/css/home.css?${version}`)

@@ -1,5 +1,5 @@
 app:
-  name: Koa应用
+  name: KOA应用
   words:
     hello: 您好
     login: 登录
@@ -18,7 +18,7 @@ views:
     error:
       title: 异常
     index:
-      title: 首页
+      title: 一个KOA2的应用模板
   user:
     login:
       title: 登录

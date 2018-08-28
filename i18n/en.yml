@@ -1,5 +1,5 @@
 app:
-  name: Koa app
+  name: KOA app
   words:
     hello: Hello
     login: &login Login
@@ -18,7 +18,7 @@ views:
     error:
       title: Exception
     index:
-      title: Home
+      title: A koa 2 app template
   user:
     login:
       title: *login
