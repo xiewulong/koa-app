@@ -5,10 +5,16 @@
  */
 'use strict';
 
+// Stylesheets
 import '../../stylesheets/common.scss';
+
+// Javascripts
 import axios from 'axios';
 import 'core-js/fn/promise/finally';
+// import 'core-js/modules/es6.object.assign';
+// import 'core-js/shim';
 import qs from 'qs';
+// import 'regenerator-runtime/runtime';
 
 // Axios
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
