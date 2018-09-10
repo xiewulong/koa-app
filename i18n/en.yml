@@ -19,6 +19,9 @@ views:
       title: Exception
     index:
       title: A koa 2 app template
+  socket:
+    index:
+      title: Web socket
   user:
     login:
       title: *login

@@ -8,6 +8,7 @@
 
 const child_process = require('child_process');
 const fs = require('fs');
+const http = require('http');
 const path = require('path');
 const log4js = require('log4js');
 const yaml = require('js-yaml');
@@ -29,12 +30,14 @@ const session = require('koa-session');
 const static_middleware = require('koa-static');
 
 const ability = require('./ability');
+const channels = require('./channels');
 const controllers = require('./controllers');
 const pkg = require('./package.json');
 const User = require('./models/user');
 
 const app = module.exports = new Koa();
 const development = app.env === 'development';
+const server = http.createServer(app.callback());
 
 log4js.configure({
   appenders: {
@@ -60,7 +63,7 @@ log4js.configure({
 });
 
 app.keys = [ process.env.APP_SECRET_KEY_BASE ];
-app.context.logger = log4js.getLogger();
+app.context.logger = server.logger = log4js.getLogger();
 app.context.pug = new Pug({
   app,
   // basedir: '',
@@ -192,7 +195,7 @@ app .use(static_middleware('public', {
       ctx.pug.locals.keywords = pkg.keywords.join(', ');
       ctx.pug.locals.version = development ? '' : pkg.version;
       ctx.request.permit = (names = [], defaults = {}) => {
-        if (!ctx.request.body || !Object.keys(ctx.request.body).length) {
+        if(!ctx.request.body || !Object.keys(ctx.request.body).length) {
           return defaults;
         }
 
@@ -200,7 +203,7 @@ app .use(static_middleware('public', {
         for (let name, param, i = 0, len = names.length; i < len; i++) {
           name = names[i];
           param = ctx.request.body[name];
-          if (param === undefined) {
+          if(param === undefined) {
             continue;
           }
 
@@ -244,14 +247,18 @@ app .use(static_middleware('public', {
     })
     ;
 
+// Channels
+channels(server, { path: '/sock' });
+
 // !module.parent &&
-  app.listen(process.env.APP_PORT, () => app.context.logger.info(`${pkg.name} is running${process.env.APP_PORT && ` at ${process.env.APP_PORT}` || ''}.`));
+  server.listen(process.env.APP_PORT, () => app.context.logger.info(`${pkg.name} is running${process.env.APP_PORT && ` at ${process.env.APP_PORT}` || ''}.`));
 
 // Listener
 development &&  [
+                  'channels',
                   'controllers',
                   // 'i18n',
-                  // 'middlewares',
+                  'middlewares',
                   'models',
                   'ability.js',
                   'app.js',

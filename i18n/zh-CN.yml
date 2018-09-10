@@ -19,6 +19,9 @@ views:
       title: 异常
     index:
       title: 一个KOA2的应用模板
+  socket:
+    index:
+      title: Web socket
   user:
     login:
       title: 登录

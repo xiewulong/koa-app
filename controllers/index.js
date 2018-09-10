@@ -29,6 +29,7 @@ Router.api = {
   require('./dashboard'),
   require('./file'),
   require('./home'),
+  require('./socket'),
   require('./user'),
 ].forEach(controller => router.use(controller.routes(), controller.allowedMethods()));
 
