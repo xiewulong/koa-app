@@ -28,6 +28,7 @@ const rbac = require('koa-rbac');
 const redis = require('koa-redis');
 const session = require('koa-session');
 const static_middleware = require('koa-static');
+const io_adapter = require('socket.io-redis');
 
 const ability = require('./ability');
 const channels = require('./channels');
@@ -248,7 +249,10 @@ app .use(static_middleware('public', {
     ;
 
 // Channels
-channels(server, { path: '/sock' });
+channels(server, {
+  path: '/sock',
+  adapter: io_adapter(process.env.APP_REDIS_MASTER),
+});
 
 // !module.parent &&
   server.listen(process.env.APP_PORT, () => app.context.logger.info(`${pkg.name} is running${process.env.APP_PORT && ` at ${process.env.APP_PORT}` || ''}.`));

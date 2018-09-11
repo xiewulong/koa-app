@@ -61,7 +61,9 @@
     "koa-static": "^4.0.2",
     "log4js": "^3.0.2",
     "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "socket.io-emitter": "^3.1.1",
+    "socket.io-redis": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
