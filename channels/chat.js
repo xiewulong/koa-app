@@ -6,10 +6,10 @@
 'use strict';
 
 const client = function(socket) {
-  socket.server.httpServer.logger.info('Socket.io: A user connected');
+  socket.server.httpServer.logger.info('Socket.io: A client connected');
 
   socket.on('disconnect', () => {
-    socket.server.httpServer.logger.info('Socket.io: User disconnected');
+    socket.server.httpServer.logger.info('Socket.io: Client disconnected');
   });
 
   socket.on('chat', message => {
