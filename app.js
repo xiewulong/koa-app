@@ -251,7 +251,7 @@ app .use(static_middleware('public', {
 // Channels
 channels(server, {
   path: '/sock',
-  adapter: io_adapter(process.env.APP_REDIS_MASTER),
+  adapter: io_adapter(process.env.APP_REDIS_MASTER, { key: 'sock' }),
 });
 
 // !module.parent &&
