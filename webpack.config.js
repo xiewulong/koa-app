@@ -34,7 +34,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      // 'vue$': `vue/dist/vue.common.js`,
+      // 'vue$': 'vue/dist/vue.esm.js',
     },
     // extensions: [ '.js', '.web.js', '.webpack.js' ],
   },
@@ -44,17 +44,6 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.pug$/,
-      //   use: [
-      //     {
-      //       loader: 'pug-loader',
-      //       options: {
-      //         pretty: true,
-      //       },
-      //     },
-      //   ],
-      // },
       {
         test: /\.css$/,
         use: [
@@ -73,7 +62,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.js?$/,
+        test: /\.js$/,
         use: ['babel-loader'],
         exclude: /node_modules/,
       },
