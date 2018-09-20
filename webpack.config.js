@@ -39,7 +39,13 @@ module.exports = {
     // extensions: [ '.js', '.web.js', '.webpack.js' ],
   },
   externals: {
+    // axios: 'axios',
     // jquery: 'jQuery',
+    // react: 'React',
+    // 'react-dom': 'ReactDOM',
+    // vue: 'Vue',
+    // 'vue-router': 'VueRouter',
+    // vuex: 'Vuex',
   },
   module: {
     rules: [
