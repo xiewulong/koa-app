@@ -40,7 +40,6 @@ module.exports = {
   },
   externals: {
     // jquery: 'jQuery',
-    // vue: 'Vue',
   },
   module: {
     rules: [
@@ -48,17 +47,17 @@ module.exports = {
         test: /\.css$/,
         use: [
           WebpackMiniCssExtractPlugin.loader,
-          'css-loader?sourceMap',
-          'postcss-loader?sourceMap',
+          'css-loader',
+          'postcss-loader',
         ],
       },
       {
         test: /\.scss$/,
         use: [
           WebpackMiniCssExtractPlugin.loader,
-          'css-loader?sourceMap',
-          'postcss-loader?sourceMap',
-          'sass-loader?sourceMap',
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
         ],
       },
       {
