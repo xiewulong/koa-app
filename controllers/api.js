@@ -13,7 +13,7 @@ const router = module.exports = new Router();
 router.prefix('/api');
 
 // GET /api
-// Router.api.tags.push({name: '/api', description: 'API展示页', externalDocs: {description: '链接', url: '/api'}});
+// Router.api.tags.push({ name: '/api', description: 'API展示页', externalDocs: { description: '链接', url: '/api' } });
 router.get('/', async (ctx, next) => {
   if(ctx.app.env != 'development') return await next();
 
@@ -23,12 +23,12 @@ router.get('/', async (ctx, next) => {
 // GET /api/json
 // Router.api.paths['/api/json'] = {};
 // Router.api.paths['/api/json']['get'] = {
-//   tags: ['/api'],
+//   tags: [ '/api' ],
 //   summary: 'API json',
 //   operationId: 'post_api',
 //   responses: {
-//     '200': {description: '请求成功'},
-//     '401': {description: '请先登录再访问'},
+//     '200': { description: '请求成功' },
+//     '401': { description: '请先登录再访问' },
 //   },
 // };
 router.get('/json', async (ctx, next) => {
