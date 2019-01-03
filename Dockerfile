@@ -5,17 +5,15 @@ RUN yum -y install gcc gcc-c++ make \
                    cairo cairo-devel cairomm-devel giflib-devel libjpeg-turbo-devel pango pango-devel pangomm pangomm-devel \
     && yum clean all \
     \
-    && /usr/local/node/bin/npm i -g --registry=https://registry.npm.taobao.org cnpm npm@latest \
-    && ln -sf /usr/local/node/bin/cnpm /usr/local/bin/cnpm \
-    && ln -sf /usr/local/node/bin/npx /usr/local/bin/npx
+    && /usr/local/node/bin/npm i --registry=https://registry.npm.taobao.org -g cnpm npm@latest
 
-VOLUME ["/app/log"]
+VOLUME [ "/app/log" ]
 
 ENTRYPOINT []
 
 ENV APP_PORT 80
 EXPOSE 80
-CMD ["/usr/local/node/bin/npm", "run", "app"]
+CMD [ "/usr/local/node/bin/npm", "run", "app" ]
 
 WORKDIR /app
 ADD . .
