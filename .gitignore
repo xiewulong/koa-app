@@ -65,4 +65,6 @@ typings/
 
 # Docker compose
 docker-compose.yml
+
+# Custom
 public/assets
